@@ -6,9 +6,9 @@ from io import BytesIO
 from datetime import datetime, timedelta
  
 sidebar_bg_img = """
-     <style>
+    <style>
 
-     #MainBg
+    #MainBg
     .st-emotion-cache-1r4qj8v {
     position: absolute;
     background: #FFFAFA;
@@ -88,6 +88,27 @@ sidebar_bg_img = """
     border: 1px solid rgba(49, 51, 63, 0.2);
     }
 
+    /*sidebar heading-demodata xml*/
+    .st-emotion-cache-1gwvy71 {
+    padding: 0px 1.5rem 4rem;
+    }
+
+    .st-emotion-cache-1gwvy71 h1 {
+    font-family: "League Spartan", sans-serif;
+    color: #ffffff;
+    background-color: #032C41;
+    font-size: 30px;
+    }
+
+    .st-emotion-cache-64tehz {
+    width: 288px;
+    position: relative;
+    display: flex;
+    flex: 1 1 0%;
+    flex-direction: column;
+    gap: 0rem;
+    }
+
 
     #if button selected
     .st-emotion-cache-1ny7cjd:active {
@@ -119,9 +140,19 @@ sidebar_bg_img = """
     padding:  0.5rem 0.5rem 0.25rem ;
     }
 
-    /*xml demo data border*/
-    .st-emotion-cache-1gwvy71 {
-    padding: 0px 1.5rem 5rem;
+    /*Sidebar COmponents*/
+    .st-emotion-cache-ue6h4q {
+    font-size: 14px;
+    color: rgb(49, 51, 63);
+    display: flex;
+    visibility: visible;
+    margin-bottom: 0.5rem;
+    height: auto;
+    min-height: 1.5rem;
+    vertical-align: middle;
+    flex-direction: row;
+    -webkit-box-align: center;
+    align-items: center;
     }
 
 
@@ -133,12 +164,6 @@ sidebar_bg_img = """
     background-color: #02506B;
     color: #ffffff;
     padding: 1rem;
-    }
-
-    /*sidebar heading-demodata xml*/
-    .st-emotion-cache-1gwvy71 h1 {
-    color: #ffffff;
-    background-color: #032C41;
     }
 
     [data-testid= "stSidebarUserContent"]{
@@ -351,7 +376,7 @@ def main():
 
     # Sidebar for file selection and source update
     st.sidebar.title("XML FAKER")
-    st.sidebar.markdown("<hr>", unsafe_allow_html=True)
+    st.sidebar.divider()
     uploaded_files = st.sidebar.file_uploader("Choose XML files", accept_multiple_files=True, type=["xml"])
    
     if uploaded_files:
@@ -440,19 +465,26 @@ def main():
             else:
                 st.write(f"Unknown file type: {file_name}")
                 return
- 
+            
             if update_button:
                 modified_xml = save_modified_xml(file_name, tree)
-                st.success(":white_check_mark: All fields updated successfully!:smile:")
                 st.sidebar.download_button(
-                    label="Download Modified XML",
-                    data = modified_xml,    
-                    file_name=file_name,
-                    mime='application/xml'
-                )
- 
+                label="Download Modified XML",
+                data = modified_xml,    
+                file_name=file_name,
+                mime='application/xml'
+            )
+                st.success(":white_check_mark: All fields updated successfully!")
+
+
+
 if __name__ == "__main__":
-    st.set_page_config(layout="wide",page_icon=":earth_asia:", page_title = "XML FAKER")
+    fakerIcon= Image.open("fakerIcon.ico")
+    st.set_page_config(
+        page_title="XML Faker",
+        layout="wide",
+        page_icon=fakerIcon)
+    
     st.markdown(sidebar_bg_img, unsafe_allow_html=True)
     st.logo("logoSN.png")
     main()
