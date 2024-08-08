@@ -350,7 +350,7 @@ def main():
     my_bar.empty()
 
     # Sidebar for file selection and source update
-    st.sidebar.title("XML Demo Data Processing")
+    st.sidebar.title("XML FAKER")
     st.sidebar.markdown("<hr>", unsafe_allow_html=True)
     uploaded_files = st.sidebar.file_uploader("Choose XML files", accept_multiple_files=True, type=["xml"])
    
