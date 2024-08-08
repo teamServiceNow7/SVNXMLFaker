@@ -452,7 +452,7 @@ def main():
                 )
  
 if __name__ == "__main__":
-    st.set_page_config(layout="wide",page_icon=":earth_asia:", title = "XML FAKER")
+    st.set_page_config(layout="wide",page_icon=":earth_asia:", page_title = "XML FAKER")
     st.markdown(sidebar_bg_img, unsafe_allow_html=True)
     st.logo("logoSN.png")
     main()
