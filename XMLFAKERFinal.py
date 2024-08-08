@@ -452,6 +452,8 @@ def main():
     
             
             update_button = st.sidebar.button("Update All Fields")
+            st.sidebar.divider()
+
  
             if "samp_eng_app_usage_summary" in file_name:
                 tree = parse_usage_summary(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None,total_idle_dur if update_button else None, total_session_dur if update_button else None)
