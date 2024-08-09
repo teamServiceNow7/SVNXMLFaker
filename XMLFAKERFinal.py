@@ -31,6 +31,23 @@ sidebar_bg_img = """
     line-height: 1;
     }
 
+    
+    /*Image Title*/
+    .st-emotion-cache-1v0mbdj {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    -webkit-box-align: stretch;
+    align-items: stretch;
+    width: auto;
+    -webkit-box-flex: 0;
+    flex-grow: 0;
+    margin-bottom: 1rem;
+    margin-top: 0rem;
+    }
+
     h1#servicenow-engineering-demo-data-modifier {
     text-align: center;
     }
@@ -364,9 +381,9 @@ def save_modified_xml(file_name, tree):
 
 #Main Function 
 def main():
-
-    st.title("ServiceNow ENGINEERING DEMO DATA MODIFIER")
-    st.divider()
+    st.image("XML_Title.png")
+    #st.title("ServiceNow ENGINEERING DEMO DATA MODIFIER")
+    #st.divider()
 
     progress_text = "Operation in progress. Please wait."
     my_bar = st.progress(0, text=progress_text)
