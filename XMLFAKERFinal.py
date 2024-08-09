@@ -503,11 +503,11 @@ def main():
 
 
 if __name__ == "__main__":
-    fakerIcon= Image.open("fakerIcon.ico")
+    DDMIcon= Image.open("DDM_Icon.ico")
     st.set_page_config(
         page_title="ServiceNow Engineering Demo Data Modifier",
         layout="wide",
-        page_icon=fakerIcon)
+        page_icon=DDMIcon)
     
     st.markdown(sidebar_bg_img, unsafe_allow_html=True)
     st.logo("logoSN.png")
