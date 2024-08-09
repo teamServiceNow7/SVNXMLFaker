@@ -6,6 +6,7 @@ from io import BytesIO
 from datetime import datetime, timedelta
  
 sidebar_bg_img = """
+    
     <style>
 
     #MainBg
@@ -31,7 +32,6 @@ sidebar_bg_img = """
     line-height: 1;
     }
 
-    
     /*Image Title*/
     .st-emotion-cache-1v0mbdj {
     display: block;
@@ -51,7 +51,6 @@ sidebar_bg_img = """
     h1#servicenow-engineering-demo-data-modifier {
     text-align: center;
     }
-
 
     /* header violet*/
     h2{
@@ -112,12 +111,11 @@ sidebar_bg_img = """
     padding: 0px 1.5rem 6rem;
     }
 
-
     .st-emotion-cache-1gwvy71 h1 {
     font-family: "League Spartan", sans-serif;
     color: #ffffff;
     background-color: #032C41;
-    font-size: 30px;
+    font-size: 23px;
     }
 
     .st-emotion-cache-64tehz {
@@ -128,7 +126,6 @@ sidebar_bg_img = """
     flex-direction: column;
     gap: 1rem;
     }
-
 
     #if button selected
     .st-emotion-cache-1ny7cjd:active {
@@ -226,7 +223,7 @@ sidebar_bg_img = """
         background-color:#E6EDF1; 
     }
 
-    </style>          
+    </style>                 
             
 """
 
