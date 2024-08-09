@@ -418,7 +418,7 @@ def main():
             # Load and parse the XML file
             tree = ET.parse(selected_file)
             root = tree.getroot()
-
+            usage_elements = None
             usage = root.find('.//samp_eng_app_usage_summary[@action="INSERT_OR_UPDATE"]')
             concurrent = root.find('.//samp_eng_app_concurrent_usage[@action="INSERT_OR_UPDATE"]')
             denial = root.find('.//samp_eng_app_denial[@action="INSERT_OR_UPDATE"]')
