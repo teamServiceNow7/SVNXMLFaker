@@ -418,14 +418,19 @@ def main():
             # Load and parse the XML file
             tree = ET.parse(selected_file)
             root = tree.getroot()
+
+            usage = root.find('.//samp_eng_app_usage_summary[@action="INSERT_OR_UPDATE"]')
+            concurrent = root.find('.//samp_eng_app_concurrent_usage[@action="INSERT_OR_UPDATE"]')
+            denial = root.find('.//samp_eng_app_denial[@action="INSERT_OR_UPDATE"]')
+         
             # Find all <samp_eng_app_concurrent_usage> elements with the specified action attribute
-            if "samp_eng_app_usage_summary" in file_name:
+            if usage:
                 usage_elements = root.findall('.//samp_eng_app_usage_summary[@action="INSERT_OR_UPDATE"]')
                
-            elif "samp_eng_app_concurrent_usage" in file_name:
+            elif concurrent:
                 usage_elements = root.findall('.//samp_eng_app_concurrent_usage[@action="INSERT_OR_UPDATE"]')
     
-            elif "samp_eng_app_denial" in file_name:
+            elif denial:
                 usage_elements = root.findall('.//samp_eng_app_denial[@action="INSERT_OR_UPDATE"]')
                 # Count the elements
             count = len(usage_elements)
@@ -437,7 +442,7 @@ def main():
             st.sidebar.subheader("New Date Value", "")
 
             # Determine the appropriate label [EDITED  ]
-            if "denial" in file_name:
+            if denial:
                 label = "Update Denial Date"
             else:
                 label = "Update Usage Date"
@@ -447,7 +452,7 @@ def main():
                 st.markdown("")
                 new_date = st.date_input("Enter Start Date",value=None)
 
-            if "usage_summary" in file_name:
+            if usage:
                 with st.sidebar.expander(f"#### {"Update Idle Duration"}"):
                     st.markdown("")
                     idle_dur_date = st.date_input("Enter Idle Duration (Date)",value=None)
@@ -472,13 +477,13 @@ def main():
             st.sidebar.divider()
 
  
-            if "samp_eng_app_usage_summary" in file_name:
+            if usage:
                 tree = parse_usage_summary(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None,total_idle_dur if update_button else None, total_session_dur if update_button else None)
 
-            elif "samp_eng_app_concurrent_usage" in file_name:
+            elif concurrent:
                 tree = parse_concurrent_usage(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None)
            
-            elif "samp_eng_app_denial" in file_name:
+            elif denial:
                 tree = parse_denial(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None)
                 
             else:
