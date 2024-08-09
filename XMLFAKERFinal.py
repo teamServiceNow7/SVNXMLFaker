@@ -362,7 +362,7 @@ def save_modified_xml(file_name, tree):
 #Main Function 
 def main():
 
-    st.title("XML FAKER")
+    st.title("ServiceNow Engineering Demo Data Modifier")
     st.divider()
 
     progress_text = "Operation in progress. Please wait."
@@ -375,7 +375,7 @@ def main():
     my_bar.empty()
 
     # Sidebar for file selection and source update
-    st.sidebar.title("XML FAKER")
+    st.sidebar.title("ServiceNow Engineering Demo Data Modifier")
     st.sidebar.divider()
     uploaded_files = st.sidebar.file_uploader("Choose XML files", accept_multiple_files=True, type=["xml"])
    
@@ -483,7 +483,7 @@ def main():
 if __name__ == "__main__":
     fakerIcon= Image.open("fakerIcon.ico")
     st.set_page_config(
-        page_title="XML Faker",
+        page_title="ServiceNow Engineering Demo Data Modifier",
         layout="wide",
         page_icon=fakerIcon)
     
