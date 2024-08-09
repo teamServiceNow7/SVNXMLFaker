@@ -19,8 +19,9 @@ sidebar_bg_img = """
     }
 
     h1 {
-    font-family: "League Spartan", sans-serif;
+    font-family: "Font Awesome 6 Pro", sans-serif;
     font-weight: 800;
+    font-variant: small-caps;
     background: linear-gradient(to top, #032C41, #02506B);
     -webkit-background-clip: text;
     background-clip: text;
@@ -30,11 +31,12 @@ sidebar_bg_img = """
     line-height: 1;
     }
 
-    h1#xml-faker {
+    h1#servicenow-engineering-demo-data-modifier {
     text-align: center;
     }
 
-     /* header violet*/
+
+    /* header violet*/
     h2{
     background-color: #4F52BD;
     color: white;
@@ -90,8 +92,9 @@ sidebar_bg_img = """
 
     /*sidebar heading-demodata xml*/
     .st-emotion-cache-1gwvy71 {
-    padding: 0px 1.5rem 4rem;
+    padding: 0px 1.5rem 6rem;
     }
+
 
     .st-emotion-cache-1gwvy71 h1 {
     font-family: "League Spartan", sans-serif;
@@ -362,7 +365,7 @@ def save_modified_xml(file_name, tree):
 #Main Function 
 def main():
 
-    st.title("ServiceNow Engineering Demo Data Modifier")
+    st.title("ServiceNow ENGINEERING DEMO DATA MODIFIER")
     st.divider()
 
     progress_text = "Operation in progress. Please wait."
@@ -375,7 +378,7 @@ def main():
     my_bar.empty()
 
     # Sidebar for file selection and source update
-    st.sidebar.title("ServiceNow Engineering Demo Data Modifier")
+    st.sidebar.title("ServiceNow ENGINEERING DEMO DATA MODIFIER")
     st.sidebar.divider()
     uploaded_files = st.sidebar.file_uploader("Choose XML files", accept_multiple_files=True, type=["xml"])
    
