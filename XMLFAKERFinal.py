@@ -499,6 +499,7 @@ def main():
                 mime='application/xml',
                 type="primary"
             )
+                st.sidebar.divider()
                 st.success(":white_check_mark: All fields updated successfully!")
 
 
