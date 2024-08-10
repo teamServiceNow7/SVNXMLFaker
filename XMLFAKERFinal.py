@@ -496,7 +496,8 @@ def main():
                 label="Download Modified XML",
                 data = modified_xml,    
                 file_name=file_name,
-                mime='application/xml'
+                mime='application/xml',
+                type="primary"
             )
                 st.success(":white_check_mark: All fields updated successfully!")
 
