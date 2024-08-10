@@ -494,7 +494,7 @@ def main():
                 modified_xml = save_modified_xml(file_name, tree)
                 st.sidebar.download_button(
                 label="Download Modified XML",
-                type="Primary",
+                type=Primary,
                 data = modified_xml,    
                 file_name=file_name,
                 mime='application/xml'
