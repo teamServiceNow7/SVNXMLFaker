@@ -377,7 +377,6 @@ def save_modified_xml(file_name, tree):
     modified_xml = BytesIO()
     tree.write(modified_xml, encoding='utf-8', xml_declaration=True)
     modified_xml.seek(0)
-    st.session_state["modified_xml"] = modified_xml
     return modified_xml
 
 #Main Function 
@@ -408,11 +407,7 @@ def main():
         for uploaded_file in uploaded_files:
             if uploaded_file.name == selected_file_name:
                 selected_file = uploaded_file
-                
                 break
-            elif 'modified_xml' in st.session_state:
-                st.session_state.active = st.session_state.modified_xml
-                selected_file = st.session_state.active
          
         if selected_file:
            
@@ -500,7 +495,6 @@ def main():
             
             if update_button:
                 modified_xml = save_modified_xml(file_name, tree)
-                st.session_state["modified_xml"] = modified_xml
                 st.sidebar.download_button(
                 label="Download Modified XML",
                 data = modified_xml,    
