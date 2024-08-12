@@ -534,9 +534,6 @@ def main():
                 st.sidebar.divider()
                 st.success(":white_check_mark: All fields updated successfully!")
 
-                # Refresh the file display with updated XML
-                st.experimental_rerun()
-
 if __name__ == "__main__":
     DDMIcon= Image.open("DDM_Icon.ico")
     st.set_page_config(
