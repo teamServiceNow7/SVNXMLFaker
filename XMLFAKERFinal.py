@@ -517,7 +517,7 @@ def main():
                 tree = parse_concurrent_usage(tree, root, min_range, max_range, new_source, new_date)
             elif denial:
                 tree = parse_denial(tree, root, min_range, max_range, new_source, new_date)
-             else:
+            else:
                 st.write(f"Unknown file type: {file_name}")
                 return
 
