@@ -411,7 +411,7 @@ def main():
              st.session_state.active = selected_file
                 break
     elif 'modified_xml' in st.session_state:
-            st.session_state.active = st.session_state.modified_xml
+         st.session_state.active = st.session_state.modified_xml
      
         if selected_file:
            
