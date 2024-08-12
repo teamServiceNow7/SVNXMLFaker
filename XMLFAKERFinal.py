@@ -157,7 +157,7 @@ sidebar_bg_img = """
     padding:  0.5rem 0.5rem 0.25rem ;
     }
 
-    /*Sidebar COmponents*/
+    /*Sidebar Components*/
     .st-emotion-cache-ue6h4q {
     font-size: 14px;
     color: rgb(49, 51, 63);
@@ -178,7 +178,7 @@ sidebar_bg_img = """
     }
 
     [data-testid= "stHeader"]{
-    background-color: #6d0b17;
+    background-color: #920113;
     color: #ffffff;
     padding: 1rem;
     }
