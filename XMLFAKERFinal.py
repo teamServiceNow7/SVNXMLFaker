@@ -54,7 +54,7 @@ sidebar_bg_img = """
 
     /* header violet*/
     h2{
-    background-color: #cd172d;
+    background-color: #920113;
     color: white;
     font-variant-caps: all-small-caps;
     text-align: center;
@@ -75,7 +75,7 @@ sidebar_bg_img = """
     }
     
     [data-testid= "stThumbValue"]{
-    color: #cd172d;
+    color: #920113;
     }
 
     /*Logo*/
@@ -135,12 +135,12 @@ sidebar_bg_img = """
     }
 
     .st-emotion-cache-1ny7cjd:focus:not(:active) {
-    border-color: #cd172d;
+    border-color: #920113;
     color: #4F52BD;
     }
 
     .st-emotion-cache-1ny7cjd:hover {
-    border-color: #cd172d;
+    border-color: #920113;
     color: #4F52BD;
     }
 
@@ -178,18 +178,18 @@ sidebar_bg_img = """
     }
 
     [data-testid= "stHeader"]{
-    background-color: #cd172d;
+    background-color: #6d0b17;
     color: #ffffff;
     padding: 1rem;
     }
 
     [data-testid= "stSidebarUserContent"]{
-    background-color: #cd172d;
+    background-color: #6d0b17;
     height: 1px;
     }
 
     [data-testid= "stSidebarHeader"]{
-    background-color: #cd172d;
+    background-color: #6d0b17;
     }
 
     /*side bar subhead*/
