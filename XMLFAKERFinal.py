@@ -48,8 +48,9 @@ sidebar_bg_img = """
     margin-top: 0rem;
     }
 
-    h1#servicenow-engineering-demo-data-modifier {
-    text-align: center;
+    .st-emotion-cache-1jicfl2 {
+        padding-left: 2rem;
+        padding-right: 2rem;
     }
 
     /* header violet*/
