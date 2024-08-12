@@ -387,6 +387,8 @@ def save_modified_xml(file_name, tree):
 #Main Function 
 def main():
     st.image("XML_TitleHeader.png")
+    #st.title("ServiceNow ENGINEERING DEMO DATA MODIFIER")
+    #st.divider()
 
     progress_text = "Operation in progress. Please wait."
     my_bar = st.progress(0, text=progress_text)
@@ -413,7 +415,10 @@ def main():
                 break
  
         if selected_file:
+           
             file_name = selected_file.name
+
+            # Remove the prefix, file extension, and underscores, then convert to proper case
             display_file_name = file_name.replace("samp_eng_app_", "").replace("_", " ").rsplit('.', 1)[0].title()
 
             st.header(f"Update {display_file_name}")
@@ -426,76 +431,86 @@ def main():
             concurrent = root.find('.//samp_eng_app_concurrent_usage[@action="INSERT_OR_UPDATE"]')
             denial = root.find('.//samp_eng_app_denial[@action="INSERT_OR_UPDATE"]')
          
+            # Find all <samp_eng_app_concurrent_usage> elements with the specified action attribute
             if usage:
                 usage_elements = root.findall('.//samp_eng_app_usage_summary[@action="INSERT_OR_UPDATE"]')
+               
             elif concurrent:
                 usage_elements = root.findall('.//samp_eng_app_concurrent_usage[@action="INSERT_OR_UPDATE"]')
+    
             elif denial:
                 usage_elements = root.findall('.//samp_eng_app_denial[@action="INSERT_OR_UPDATE"]')
-                
+                # Count the elements
             count = len(usage_elements)
 
-            min_range, max_range = st.sidebar.slider("Select Range", min_value=1, max_value=count, value=(1, count), key="select_range")
+            min_range, max_range = st.sidebar.slider("Select Range",min_value=1, max_value=count,value=(1,count),key="select_range")
+            # Fields that are always visible
             new_source = st.sidebar.text_input("New Source Value", "")
+           
             st.sidebar.subheader("New Date Value", "")
 
+            # Determine the appropriate label [EDITED  ]
             if denial:
                 label = "Update Denial Date"
             else:
                 label = "Update Usage Date"
 
+            # Display the date input with the corresponding label
             with st.sidebar.expander(f"#### {label}"):
                 st.markdown("")
-                new_date = st.date_input("Enter Start Date", value=None)
+                new_date = st.date_input("Enter Start Date",value=None)
 
             if usage:
-                with st.sidebar.expander(f"#### Update Idle Duration"):
+                with st.sidebar.expander(f"#### {"Update Idle Duration"}"):
                     st.markdown("")
-                    idle_dur_date = st.date_input("Enter Idle Duration (Date)", value=None)
-                    idle_dur_time = st.time_input("Enter Idle Duration (Time)", value=None, step=60)
+                    idle_dur_date = st.date_input("Enter Idle Duration (Date)",value=None)
+                    idle_dur_time = st.time_input("Enter Idle Duration (Time)",value=None,step=60)
                     
-                with st.sidebar.expander(f"#### Session Duration"):
+                with st.sidebar.expander(f"#### {"Session Duration"}"):
                     st.markdown("")
-                    session_dur_date = st.date_input("Enter Session Duration (Date)", value=None)
-                    session_dur_time = st.time_input("Enter Session Duration (Time)", value=None, step=60)
+                    session_dur_date = st.date_input("Enter Session Duration (Date)",value=None)
+                    session_dur_time = st.time_input("Enter Session Duration (Time)",value=None,step=60)
 
-                total_idle_dur = datetime.combine(idle_dur_date, idle_dur_time) if (idle_dur_date and idle_dur_time) else None
-                total_session_dur = datetime.combine(session_dur_date, session_dur_time) if (session_dur_date and session_dur_time) else None
-
+                if((idle_dur_date is not None) and (idle_dur_time is not None)):
+                    total_idle_dur = datetime.combine(idle_dur_date,idle_dur_time)
+                else:
+                    total_idle_dur = None            
+                if((session_dur_date is not None) and (session_dur_time is not None) ):        
+                    total_session_dur = datetime.combine(session_dur_date,session_dur_time)
+                else:
+                    total_session_dur = None
+    
+            
             update_button = st.sidebar.button("Update All Fields")
             st.sidebar.divider()
 
+ 
+            if usage:
+                tree = parse_usage_summary(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None,total_idle_dur if update_button else None, total_session_dur if update_button else None)
+
+            elif concurrent:
+                tree = parse_concurrent_usage(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None)
+           
+            elif denial:
+                tree = parse_denial(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None)
+                
+            else:
+                st.write(f"Unknown file type: {file_name}")
+                return
+            
             if update_button:
-                if usage:
-                    tree = parse_usage_summary(tree, root, min_range, max_range, new_source, new_date, total_idle_dur, total_session_dur)
-                elif concurrent:
-                    tree = parse_concurrent_usage(tree, root, min_range, max_range, new_source, new_date)
-                elif denial:
-                    tree = parse_denial(tree, root, min_range, max_range, new_source, new_date)
-                else:
-                    st.write(f"Unknown file type: {file_name}")
-                    return
-
-                # Save modified XML and store it in session state
-                modified_xml = save_modified_xml(tree)
-                st.session_state.modified_xml = modified_xml
-                st.session_state.file_name = f"modified_{file_name}"
-
-                # Update display with modified XML content
+                modified_xml = save_modified_xml(file_name, tree)
+                #selected_file = modified_xml
                 st.sidebar.download_button(
-                    label="Download Modified XML",
-                    data=modified_xml,
-                    file_name=st.session_state.file_name,
-                    mime='application/xml'
+                label="Download Modified XML",
+                data = modified_xml,    
+                file_name=file_name,
+                mime='application/xml',
+                type="primary"
                 )
                 st.sidebar.divider()
                 st.success(":white_check_mark: All fields updated successfully!")
 
-    # Display the XML content if available
-    if 'modified_xml' in st.session_state:
-        st.subheader("Modified XML Content:")
-        xml_content = st.session_state.modified_xml.read().decode('utf-8')
-        st.text_area("Modified XML", value=xml_content, height=500, max_chars=None)
 
 
 if __name__ == "__main__":
