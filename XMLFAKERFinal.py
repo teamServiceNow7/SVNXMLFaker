@@ -54,7 +54,7 @@ sidebar_bg_img = """
 
     /* header violet*/
     h2{
-    background-color: #4F52BD;
+    background-color: #cd172d;
     color: white;
     font-variant-caps: all-small-caps;
     text-align: center;
@@ -75,7 +75,7 @@ sidebar_bg_img = """
     }
     
     [data-testid= "stThumbValue"]{
-    color: #4F52BD;
+    color: #cd172d;
     }
 
     /*Logo*/
@@ -135,12 +135,12 @@ sidebar_bg_img = """
     }
 
     .st-emotion-cache-1ny7cjd:focus:not(:active) {
-    border-color: #4F52BD;
+    border-color: #cd172d;
     color: #4F52BD;
     }
 
     .st-emotion-cache-1ny7cjd:hover {
-    border-color: #4F52BD;
+    border-color: #cd172d;
     color: #4F52BD;
     }
 
