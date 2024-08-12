@@ -499,6 +499,7 @@ def main():
             
             if update_button:
                 modified_xml = save_modified_xml(file_name, tree)
+                selected_file = modified_xml
                 st.sidebar.download_button(
                 label="Download Modified XML",
                 data = modified_xml,    
@@ -506,7 +507,6 @@ def main():
                 mime='application/xml',
                 type="primary"
                 )
-                selected_file = modified_xml
                 st.sidebar.divider()
                 st.success(":white_check_mark: All fields updated successfully!")
 
