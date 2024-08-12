@@ -500,7 +500,7 @@ def main():
             
             if update_button:
                 modified_xml = save_modified_xml(file_name, tree)
-                #selected_file = modified_xml
+                st.session_state.modified_xml = modified_xml
                 st.sidebar.download_button(
                 label="Download Modified XML",
                 data = modified_xml,    
@@ -510,6 +510,10 @@ def main():
                 )
                 st.sidebar.divider()
                 st.success(":white_check_mark: All fields updated successfully!")
+             
+    if 'modified_xml' in st.session_state:
+        st.subheader("Modified XML Content:")
+        xml_content = st.session_state.modified_xml.read().decode('utf-8') 
 
 
 
