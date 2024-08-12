@@ -500,7 +500,7 @@ def main():
             
             if update_button:
                 modified_xml = save_modified_xml(file_name, tree)
-                selected_file = modified_xml
+                #selected_file = modified_xml
                 st.sidebar.download_button(
                 label="Download Modified XML",
                 data = modified_xml,    
