@@ -385,6 +385,7 @@ def main():
         st.session_state.modified_xml = None
         st.session_state.file_name = None
         st.session_state.uploaded_files = None
+        mod_xml = None
 
     st.image("XML_TitleHeader.png")
     
@@ -425,7 +426,7 @@ def main():
             # Load and parse the XML file
             if st.session_state.modified_xml:
                 # Use the modified XML if it exists
-                tree = ET.parse(io.BytesIO(st.session_state.modified_xml))
+                tree = ET.parse(io.BytesIO(mod_xml))
                 root = tree.getroot()
             else:
                 # Load the XML from the uploaded file
