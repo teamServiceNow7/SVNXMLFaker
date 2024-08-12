@@ -178,18 +178,18 @@ sidebar_bg_img = """
     }
 
     [data-testid= "stHeader"]{
-    background-color: #02506B;
+    background-color: #cd172d;
     color: #ffffff;
     padding: 1rem;
     }
 
     [data-testid= "stSidebarUserContent"]{
-    background-color: #032C41;
+    background-color: #cd172d;
     height: 1px;
     }
 
     [data-testid= "stSidebarHeader"]{
-    background-color: #032C41;
+    background-color: #cd172d;
     }
 
     /*side bar subhead*/
