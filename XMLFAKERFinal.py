@@ -522,7 +522,7 @@ def main():
                 return
 
             if update_button:
-                mod_xml = save_modified_xml(tree)
+                mod_xml = save_modified_xml(file_name,tree)
                 st.session_state.modified_xml = mod_xml
                 
                 st.sidebar.download_button(
