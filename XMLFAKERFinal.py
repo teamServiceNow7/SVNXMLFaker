@@ -505,7 +505,8 @@ def main():
                 file_name=file_name,
                 mime='application/xml',
                 type="primary"
-            )
+                )
+                selected_file = modified_xml
                 st.sidebar.divider()
                 st.success(":white_check_mark: All fields updated successfully!")
 
