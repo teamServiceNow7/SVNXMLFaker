@@ -146,7 +146,8 @@ sidebar_bg_img = """
 
 
     [data-testid="stSidebar"]{
-    background-color: #E6EDF1;     
+    background-color: #E6EDF1;    
+    width: 15%;
     }
 
     [data-testid= "stHeader"]{
