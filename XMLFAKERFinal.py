@@ -177,11 +177,11 @@ sidebar_bg_img = """
     
     /*for paragraph*/
     p, ol, ul, dl {
-        margin-top: 1rem;
+        margin-top: 0rem;
         margin-right: 0px;
-        margin-bottom: 1rem;
+        margin-bottom: 0rem;
         margin-left: 0px;
-        font-size: 1rem;
+        font-size: 0.5rem;
         font-weight: 400;
     }
 
