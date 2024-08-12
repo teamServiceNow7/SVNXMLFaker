@@ -257,6 +257,7 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {idle_date_elem.text}")
                 else:
                     min = min+1
+                    usage_date_elem.text = new_date.strftime('%Y-%m-%d')
                  
             if total_idle_dur:
                 idle_date_elem = elem.find('total_idle_dur')
@@ -273,6 +274,7 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {idle_date_elem.text}")
                 else:
                     min = min+1
+                    idle_date_elem.text = total_idle_dur.strftime('%Y-%m-%d %H:%M:%S')
                  
             if total_session_dur:
                 session_date_elem = elem.find('total_sess_dur')
@@ -289,6 +291,7 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {session_date_elem.text}")
                 else:
                     min = min+1
+                    session_date_elem.text = total_session_dur.strftime('%Y-%m-%d %H:%M:%S')
            
             with cols[col_idx % 4].expander(f"#### Object {idx}", expanded=True):
                 st.markdown(f"""
@@ -336,6 +339,7 @@ def parse_concurrent_usage(tree, root,min,max, new_source=None, new_date=None):
                         st.error(f"Error parsing date at index {idx}: {str(e)}")
                 else:
                     min = min+1
+                    concurent_date_elem.text = new_date.strftime('%Y-%m-%d')
            
             with cols[col_idx % 4].expander(f"#### Object {idx}", expanded=True):
                 st.markdown(f"""
@@ -379,6 +383,7 @@ def parse_denial(tree,root,min,max,new_source=None, new_date = None):
                         st.error(f"Error parsing date at index {idx}: {str(e)}")
                 else:
                     min = min+1
+                    denial_date_elem.text = new_date.strftime('%Y-%m-%d')
                 
             
             with cols[col_idx % 4].expander(f"#### Object {idx}", expanded=True):
