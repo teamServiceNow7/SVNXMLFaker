@@ -181,7 +181,7 @@ sidebar_bg_img = """
         margin-right: 0px;
         margin-bottom: 0rem;
         margin-left: 0px;
-        font-size: 14px;
+        font-size: 1rem;
         font-weight: 400;
     }
 
