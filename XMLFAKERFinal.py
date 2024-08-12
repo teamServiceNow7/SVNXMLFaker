@@ -512,8 +512,7 @@ def main():
                 st.success(":white_check_mark: All fields updated successfully!")
              
     if 'modified_xml' in st.session_state:
-        st.subheader("Modified XML Content:")
-        xml_content = st.session_state.modified_xml.read().decode('utf-8') 
+        selected_file = st.session_state.modified_xml.read().decode('utf-8') 
 
 
 
