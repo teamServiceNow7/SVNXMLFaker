@@ -171,6 +171,12 @@ sidebar_bg_img = """
     font-size: 20px;
     }
 
+    /*new date value*/
+    .st-emotion-cache-1gwvy71 h3 {
+    font-size: 20px;
+    font-weight: bold;
+    }   
+
     .st-emotion-cache-1ag92y2{
     background-color: #E6EDF1; 
     }
