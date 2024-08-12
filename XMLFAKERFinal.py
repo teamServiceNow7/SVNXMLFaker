@@ -475,7 +475,7 @@ def main():
                 else:
                     total_session_dur = None
     
-            
+            st.sidebar.button("Test Button")
             update_button = st.sidebar.button("Update All Fields")
             st.sidebar.divider()
 
