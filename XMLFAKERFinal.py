@@ -136,12 +136,12 @@ sidebar_bg_img = """
 
     .st-emotion-cache-1ny7cjd:focus:not(:active) {
     border-color: #920113;
-    color: #4F52BD;
+    color: #920113;
     }
 
     .st-emotion-cache-1ny7cjd:hover {
     border-color: #920113;
-    color: #4F52BD;
+    color: #920113;
     }
 
     .st-d5 {
