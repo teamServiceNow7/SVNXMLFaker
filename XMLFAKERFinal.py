@@ -295,22 +295,22 @@ def parse_concurrent_usage(tree, root,min,max, new_source=None, new_date=None):
                     source_elem = ET.SubElement(elem, 'source')
                 source_elem.text = new_source
             if new_date:
-                concurent_date_elem = elem.find('usage_date')
-                if concurent_date_elem is not None and concurent_date_elem.text is not None:
+                concurrent_date_elem = elem.find('usage_date')
+                if concurrent_date_elem is not None and concurrent_date_elem.text is not None:
                     try:
-                        date_obj = datetime.strptime(concurent_date_elem.text, '%Y-%m-%d')
+                        date_obj = datetime.strptime(concurrent_date_elem.text, '%Y-%m-%d')
                         new_date_obj = new_date - date_obj.date()
                         if idx == min:
                             value = new_date_obj.days
                             min = -1
                         new_date1 = date_obj + timedelta(days = value)
-                        concurent_date_elem.text = new_date1  
-                        concurent_date_elem.text = concurent_date_elem.text.strftime('%Y-%m-%d')
+                        concurrent_date_elem.text = new_date1  
+                        concurrent_date_elem.text = concurrent_date_elem.text.strftime('%Y-%m-%d')
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: {str(e)}")
                 else:
                     min = min+1
-                    concurent_date_elem.text = new_date.strftime('%Y-%m-%d')
+                    concurrent_date_elem.text = new_date.strftime('%Y-%m-%d')
            
             with cols[col_idx % 4].expander(f"#### Object {idx}", expanded=True):
                 st.markdown(f"""
