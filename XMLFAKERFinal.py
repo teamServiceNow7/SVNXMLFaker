@@ -99,12 +99,12 @@ sidebar_bg_img = """
     font-size: 23px;
     }
 
-    /*sidebar gap */
+     /*sidebar gap */
     .st-emotion-cache-1dfdf75 {
     width: 282px;
     position: relative;
     display: flex;
-    flex: 1 1 0%;
+    flex: 0.5 0.5 0%;
     flex-direction: column;
     gap: 0.5rem;
     flex-wrap: nowrap;
@@ -115,9 +115,9 @@ sidebar_bg_img = """
     width: 248px;
     position: relative;
     /* display: flex; */
-    flex: 1 1 0%;
+    flex: 0.5 0.5 0%;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.25rem;
     }
 
     .st-emotion-cache-1mi2ry5 {
