@@ -378,7 +378,7 @@ def save_modified_xml(file_name, tree):
 
 #Main Function 
 def main():
-    st.image("XML_Title.png")
+    st.image("XML_TitleHeader.png")
     #st.title("ServiceNow ENGINEERING DEMO DATA MODIFIER")
     #st.divider()
 
