@@ -110,25 +110,14 @@ sidebar_bg_img = """
     flex-wrap: nowrap;
     }
 
-    #if button selected
-    .st-emotion-cache-1ny7cjd:active {
-    color: rgb(255, 255, 255);
-    border-color: rgb(79 82 189);
-    background-color: rgb(79 82 189);
-    }
-
-    .st-emotion-cache-1ny7cjd:focus:not(:active) {
-    border-color: #920113;
-    color: #920113;
-    }
-
-    .st-emotion-cache-1ny7cjd:hover {
-    border-color: #920113;
-    color: #920113;
-    }
-
-    .st-d5 {
-    background-color: #FFFFFF;
+    /*date expander gap*/
+    .st-emotion-cache-phzz4j {
+    width: 248px;
+    position: relative;
+    /* display: flex; */
+    flex: 1 1 0%;
+    flex-direction: column;
+    gap: 1rem;
     }
 
     .st-emotion-cache-1mi2ry5 {
