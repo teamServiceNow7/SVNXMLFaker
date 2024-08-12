@@ -250,10 +250,14 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                         new_date_obj = new_date - date_obj.date()
                         if idx == min:
                             value = new_date_obj.days
+                            min = -1
                         new_date1 = date_obj + timedelta(days=value)
                         usage_date_elem.text = new_date1.strftime('%Y-%m-%d')
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {idle_date_elem.text}")
+                else:
+                    min = min+1
+                 
             if total_idle_dur:
                 idle_date_elem = elem.find('total_idle_dur')
                 if idle_date_elem is not None and idle_date_elem.text is not None:
@@ -262,10 +266,14 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                         new_date_obj = total_idle_dur - date_obj
                         if idx == min:
                             value = new_date_obj.total_seconds() / 60
+                            min = -1
                         new_date1 = date_obj + timedelta(minutes=value)
                         idle_date_elem.text = new_date1.strftime('%Y-%m-%d %H:%M:%S')
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {idle_date_elem.text}")
+                else:
+                    min = min+1
+                 
             if total_session_dur:
                 session_date_elem = elem.find('total_sess_dur')
                 if session_date_elem is not None and session_date_elem.text is not None:
@@ -274,10 +282,13 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                         new_date_obj = total_session_dur - date_obj
                         if idx == min:
                             value = new_date_obj.total_seconds() / 60
+                            min = -1
                         new_date1 = date_obj + timedelta(minutes=value)
                         session_date_elem.text = new_date1.strftime('%Y-%m-%d %H:%M:%S')
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {session_date_elem.text}")
+                else:
+                    min = min+1
            
             with cols[col_idx % 4].expander(f"#### Object {idx}", expanded=True):
                 st.markdown(f"""
@@ -317,11 +328,14 @@ def parse_concurrent_usage(tree, root,min,max, new_source=None, new_date=None):
                         new_date_obj = new_date - date_obj.date()
                         if idx == min:
                             value = new_date_obj.days
+                            min = -1
                         new_date1 = date_obj + timedelta(days = value)
                         concurent_date_elem.text = new_date1  
                         concurent_date_elem.text = concurent_date_elem.text.strftime('%Y-%m-%d')
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: {str(e)}")
+                else:
+                    min = min+1
            
             with cols[col_idx % 4].expander(f"#### Object {idx}", expanded=True):
                 st.markdown(f"""
@@ -355,13 +369,17 @@ def parse_denial(tree,root,min,max,new_source=None, new_date = None):
                 if denial_date_elem is not None and denial_date_elem.text is not None:
                     try:
                         date_obj = datetime.strptime(denial_date_elem.text, '%Y-%m-%d')
-                        new_date_obj = new_date - date_obj.date()
+                        new_date_obj = new_date - date_obj.date()        
                         if idx == min:
                             value = new_date_obj.days
+                            min = -1
                         new_date1 = date_obj + timedelta(days=value)
                         denial_date_elem.text = new_date1.strftime('%Y-%m-%d')
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: {str(e)}")
+                else:
+                    min = min+1
+                
             
             with cols[col_idx % 4].expander(f"#### Object {idx}", expanded=True):
                 st.markdown(f"""
