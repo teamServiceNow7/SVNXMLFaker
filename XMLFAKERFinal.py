@@ -408,11 +408,12 @@ def main():
         for uploaded_file in uploaded_files:
             if uploaded_file.name == selected_file_name:
                 selected_file = uploaded_file
-                st.session_state.active = selected_file
+                
                 break
-    elif 'modified_xml' in st.session_state:
-         st.session_state.active = st.session_state.modified_xml
-     
+            elif 'modified_xml' in st.session_state:
+                st.session_state.active = st.session_state.modified_xml
+                selected_file = st.session_state.active
+         
         if selected_file:
            
             file_name = selected_file.name
