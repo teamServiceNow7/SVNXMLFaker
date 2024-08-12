@@ -71,7 +71,7 @@ sidebar_bg_img = """
     }
     
     h4{
-    color: #4F52BD;
+    color: #920113;
     }
     
     [data-testid= "stThumbValue"]{
