@@ -87,26 +87,6 @@ sidebar_bg_img = """
     z-index: 999990;
     }
 
-    #ButtonCSS
-    .st-emotion-cache-1ny7cjd {
-    display: inline-flex;
-    -webkit-box-align: center;
-    align-items: center;
-    -webkit-box-pack: center;
-    justify-content: center;
-    font-weight: 400;
-    padding: 0rem 0rem;
-    border-radius: 0.5rem;
-    min-height: 2.5rem;
-    margin: 0px;
-    line-height: 1.6;
-    color: inherit;
-    width: auto;
-    user-select: none;
-    background-color: rgb(255 255 255);
-    border: 1px solid rgba(49, 51, 63, 0.2);
-    }
-
     /*sidebar heading-demodata xml*/
     .st-emotion-cache-1gwvy71 {
     padding: 0px 1.5rem 6rem;
@@ -119,13 +99,15 @@ sidebar_bg_img = """
     font-size: 23px;
     }
 
-    .st-emotion-cache-64tehz {
-    width: 288px;
+    /*sidebar gap */
+    .st-emotion-cache-1dfdf75 {
+    width: 282px;
     position: relative;
     display: flex;
     flex: 1 1 0%;
     flex-direction: column;
-    gap: 1rem;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
     }
 
     #if button selected
