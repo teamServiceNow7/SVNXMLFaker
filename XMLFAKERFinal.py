@@ -471,8 +471,7 @@ def main():
                     total_session_dur = datetime.combine(session_dur_date,session_dur_time)
                 else:
                     total_session_dur = None
-    
-            st.sidebar.button("Test Button")
+   
             update_button = st.sidebar.button("Update All Fields")
             st.sidebar.divider()
 
