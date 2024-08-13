@@ -563,7 +563,7 @@ def main():
                 label = "Edit Usage Date"
 
             # Display the date input with the corresponding label
-            with st.sidebar.expander(f"#### {label}"):
+            with st.sidebar.expander(f"#### {label}", expanded=True):
                 st.markdown("")
                 new_date = st.date_input("Enter Start Date",value=None)
 
