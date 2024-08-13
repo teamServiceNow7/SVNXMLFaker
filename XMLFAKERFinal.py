@@ -445,7 +445,7 @@ def main():
             # Fields that are always visible
             with st.sidebar.expander(f"#### Edit Source Value"):
                 st.markdown("")
-                new_source = st.sidebar.text_input("New Source Value", "")
+                new_source = st.text_input("New Source Value", "")
            
             st.sidebar.subheader("New Date Value", "")
 
