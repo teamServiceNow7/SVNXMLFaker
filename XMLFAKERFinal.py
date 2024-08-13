@@ -389,7 +389,7 @@ def adjust_session_idle(idle_date_elem,session_date_elem,total_dur, idx, min,adj
     elif (adjust == 1):
         session_date_elem.text = new_date1.strftime('%Y-%m-%d %H:%M:%S')
     #Return the value to retain the increment date
-    return value
+    return value1
 
 #Function to adjust date_element
 def adjust_date_element(usage_date_elem,concurrent_date_elem,denial_date_elem, new_date, idx, min,flag,value1):
