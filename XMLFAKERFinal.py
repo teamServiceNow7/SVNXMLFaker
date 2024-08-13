@@ -235,7 +235,7 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                         value = adjust_date_element(usage_date_elem,None,None,new_date, idx, min_usage,flag,usage_value)
                         #storing the increment date value to use to other iterations
                         usage_value = value
-                    #catching the errors (this will print if there are wrong format in date and if it have date calculation overflow
+                    #catching the errors (this will print if there are wrong format in date and if it have date calculation overflow)
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
                     except OverflowError:
@@ -258,7 +258,7 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                         new_adjust_idle = adjust_session_idle(idle_date_elem,None,total_idle_dur, idx, min_idle,adjust,increment_date_idle)
                         #storing the increment date value to use to other iterations
                         increment_date_idle = new_adjust_idle
-                    #catching the errors (this will print if there are wrong format in date and if it have date calculation overflow
+                    #catching the errors (this will print if there are wrong format in date and if it have date calculation overflow)
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {idle_date_elem.text}")
                     except ValueError as e:
@@ -281,7 +281,7 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                         new_adjust_sess = adjust_session_idle(None,session_date_elem,total_session_dur, idx, min_sess,adjust,increment_date_sess)
                         #storing the increment date value to use to other iterations
                         increment_date_sess = new_adjust_sess
-                    #catching the errors (this will print if there are wrong format in date and if it have date calculation overflow
+                    #catching the errors (this will print if there are wrong format in date and if it have date calculation overflow)
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {session_date_elem.text}")
                     except ValueError as e:
@@ -316,23 +316,31 @@ def parse_concurrent_usage(tree, root,min,max, new_source=None, new_date=None):
     value1 = 0
  
     for idx, elem in enumerate(root.findall('.//samp_eng_app_concurrent_usage'), 1):
- 
+        #condition for the slider
         if ((idx <= max) and (idx >= min)):
+            #to change the source
             if new_source:
                 source_elem = elem.find('source')
                 if source_elem is None:
                     source_elem = ET.SubElement(elem, 'source')
                 source_elem.text = new_source
+            #to change the usage_date in concurrent
             if new_date:
                 concurrent_date_elem = elem.find('usage_date')
+                #condition if the concurrent_date_elem.text have a value
                 if concurrent_date_elem is not None and concurrent_date_elem.text is not None:
                     try:
+                        #calling the function to adjust the usage_date in concurrent
                         value = adjust_date_element(None,concurrent_date_elem,None,new_date, idx, min,flag,value1)
+                        #storing the increment date value to use to other iterations
                         value1 = value
+                    #catching the errors (this will print if there are wrong format in date)
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
                 else:
+                    #adjusting the min_idle to get the next value if the first value is none
                     min = min+1
+                    #replacing all that have the none value into the inputted start date
                     concurrent_date_elem.text = new_date.strftime('%Y-%m-%d')
            
             with cols[col_idx % 4].expander(f"#### Object {idx}", expanded=True):
@@ -356,23 +364,31 @@ def parse_denial(tree,root,min,max,new_source=None, new_date = None):
     flag = 2
     value1 = 0
     for idx, elem in enumerate(root.findall('.//samp_eng_app_denial'), 1):
- 
-        if ((idx <= max) and (idx >= min)):  #Condition for the slider
+        #Condition for the slider
+        if ((idx <= max) and (idx >= min)):  
+            #to change the source
             if new_source:
                 source_elem = elem.find('source')
                 if source_elem is None:
                     source_elem = ET.SubElement(elem, 'source')
                 source_elem.text = new_source
+            #to change the denial_date
             if new_date:
                 denial_date_elem = elem.find('denial_date')
+                #condition if the denial_date_elem.text have a value
                 if denial_date_elem is not None and denial_date_elem.text is not None:
                     try:
+                        #calling the function to adjust the usage_date in concurrent
                         value = adjust_date_element(None,None,denial_date_elem,new_date, idx, min,flag,value1)
+                        #storing the increment date value to use to other iterations
                         value1 = value
+                    #catching the errors (this will print if there are wrong format in date)
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
                 else:
+                    #adjusting the min_idle to get the next value if the first value is none
                     min = min+1
+                    #replacing all that have the none value into the inputted start date
                     denial_date_elem.text = new_date.strftime('%Y-%m-%d')
                 
             
@@ -393,23 +409,25 @@ def parse_denial(tree,root,min,max,new_source=None, new_date = None):
 #function to adjust session and idle date
 def adjust_session_idle(idle_date_elem,session_date_elem,total_dur, idx, min,adjust,value1):
     
-    # Parse the date from the element's text
+    # Parse the date from the appropriate element's text based on the 'adjust' flag
     if (adjust == 0):
         date_obj = datetime.strptime(idle_date_elem.text, '%Y-%m-%d %H:%M:%S')
     elif (adjust == 1):
         date_obj = datetime.strptime(session_date_elem.text, '%Y-%m-%d %H:%M:%S')
     
-    # Calculate the difference in days between new_date and the parsed date
+    # Calculate the new date by subtracting the parsed date from the total duration
     new_date_obj = total_dur - date_obj
     
-    # Determine the value for adjustment based on index
+    # Adjust the date if the index matches the minimum value
     if idx == min:
+        # Convert the difference to minutes and update 'value1'
         value1 = new_date_obj.total_seconds() / 60
-        min = -1  # Set min_value to -1 to prevent further changes
-    # Adjust the date
+        # Set min_value to -1 to prevent further changes
+        min = -1  
+    # Calculate the new date by adding 'value1' minutes to the original date
     new_date1 = date_obj + timedelta(minutes=value1)
     
-    # Update the text of date_elem with the new date in the correct format
+    # Update the text of the appropriate date element with the new formatted date
     if (adjust == 0):
         idle_date_elem.text = new_date1.strftime('%Y-%m-%d %H:%M:%S')
     elif (adjust == 1):
@@ -420,7 +438,7 @@ def adjust_session_idle(idle_date_elem,session_date_elem,total_dur, idx, min,adj
 #Function to adjust date_element
 def adjust_date_element(usage_date_elem,concurrent_date_elem,denial_date_elem, new_date, idx, min,flag,value1):
     
-    # Parse the date from the element's text
+    # Parse the date from the appropriate element's text based on the 'flag' flag
     if (flag == 0):
         date_obj = datetime.strptime(usage_date_elem.text, '%Y-%m-%d')
     elif (flag == 1):
@@ -431,20 +449,23 @@ def adjust_date_element(usage_date_elem,concurrent_date_elem,denial_date_elem, n
     # Calculate the difference in days between new_date and the parsed date
     new_date_obj = new_date - date_obj.date()
     
-    # Determine the value for adjustment based on index
+    # Adjust the date if the index matches the minimum value
     if idx == min:
+        #get the days of the interval
         value1 = new_date_obj.days
-        min = -1  # Set min_value to -1 to prevent further changes
-    # Adjust the date
+        # Set min_value to -1 to prevent further changes
+        min = -1  
+    # Adjust the date by adding the interval days to the original date
     new_date1 = date_obj + timedelta(days=value1)
     
-    # Update the text of date_elem with the new date in the correct format
+    # Update the text of the appropriate date element with the new formatted date
     if (flag == 0):
         usage_date_elem.text = new_date1.strftime('%Y-%m-%d')
     elif (flag == 1):
         concurrent_date_elem.text = new_date1.strftime('%Y-%m-%d')
     elif (flag == 2):
         denial_date_elem.text = new_date1.strftime('%Y-%m-%d')
+
     #Return the value to retain the increment date
     return value1
  
@@ -544,11 +565,12 @@ def main():
                     st.markdown("")
                     session_dur_date = st.date_input("Enter Session Duration (Date)",value=None)
                     session_dur_time = st.time_input("Enter Session Duration (Time)",value=None,step=60)
-
+                #condition to not update if there is one none in either idle_dur_date or idle_dur time
                 if((idle_dur_date is not None) and (idle_dur_time is not None)):
                     total_idle_dur = datetime.combine(idle_dur_date,idle_dur_time)
                 else:
-                    total_idle_dur = None            
+                    total_idle_dur = None 
+                #condition to not update if there is one none in either session_dur_date or session_dur_time
                 if((session_dur_date is not None) and (session_dur_time is not None) ):        
                     total_session_dur = datetime.combine(session_dur_date,session_dur_time)
                 else:
