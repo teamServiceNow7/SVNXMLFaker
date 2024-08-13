@@ -613,8 +613,8 @@ def main():
                 mime='application/xml',
                 type="primary"
                 )
-                if error: st.error(":x: Not Updated!")
-                else: st.success(":white_check_mark: All fields updated successfully!")
+                if error: placeholder.error(":x: Not Updated!")
+                else: placeholder.success(":white_check_mark: All fields updated successfully!")
 
 if __name__ == "__main__":
     DDMIcon= Image.open("DDM_Icon.ico")
