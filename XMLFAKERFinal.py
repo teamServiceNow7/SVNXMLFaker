@@ -460,6 +460,7 @@ def main():
     st.image("XML_TitleHeader.png")
     #st.title("ServiceNow ENGINEERING DEMO DATA MODIFIER")
     #st.divider()
+    placeholder = st.empty()
 
     progress_text = "Operation in progress. Please wait."
     my_bar = st.progress(0, text=progress_text)
@@ -579,8 +580,8 @@ def main():
                 mime='application/xml',
                 type="primary"
                 )
+                placeholder.success(":white_check_mark: All fields updated successfully!")
                 st.sidebar.divider()
-                st.success(":white_check_mark: All fields updated successfully!")
 
 if __name__ == "__main__":
     DDMIcon= Image.open("DDM_Icon.ico")
