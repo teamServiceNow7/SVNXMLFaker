@@ -550,7 +550,7 @@ def main():
 
             min_range, max_range = st.sidebar.slider("Select Range",min_value=1, max_value=count,value=(1,count),key="select_range")
             # Fields that are always visible
-            with st.sidebar.expander(f"#### Edit Source Value"):
+            with st.sidebar.expander(f"#### Edit Source Value", expanded=True):
                 st.markdown("")
                 new_source = st.text_input("New Source Value", "")
            
