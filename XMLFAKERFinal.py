@@ -208,8 +208,13 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
     st.write("  ")
     cols = st.columns(4)  # Adjust the number of columns as needed
     col_idx = 0
+    usage_value = 0  # Initialize value here
+    increment_date_idle = 0
+    increment_date_sess = 0
     flag = 0
-    value1 = 0  # Initialize value here
+    min_usage = min
+    min_sess = min
+    min_idle = min
 
     for idx, elem in enumerate(root.findall('.//samp_eng_app_usage_summary'), 1):
         if min <= idx <= max:
@@ -221,52 +226,44 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                 usage_date_elem = elem.find('usage_date')
                 if usage_date_elem is not None and usage_date_elem.text is not None:
                     try:
-                        value = adjust_date_element(usage_date_elem,None,None,new_date, idx, min,flag,value1)
-                        value1 = value
+                        value = adjust_date_element(usage_date_elem,None,None,new_date, idx, min_usage,flag,usage_value)
+                        usage_value = value
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {usage_date_elem.text}")
                 else:
-                    min = min+1
+                    min_usage = min_usage+1
                     usage_date_elem.text = new_date.strftime('%Y-%m-%d')
                  
             if total_idle_dur:
                 idle_date_elem = elem.find('total_idle_dur')
                 if idle_date_elem is not None and idle_date_elem.text is not None:
                     try:
-                        date_obj = datetime.strptime(idle_date_elem.text, '%Y-%m-%d %H:%M:%S')
-                        new_date_obj = total_idle_dur - date_obj
-                        if idx == min:
-                            value = new_date_obj.total_seconds() / 60
-                            min = -1
-                        new_date1 = date_obj + timedelta(minutes=value)
-                        idle_date_elem.text = new_date1.strftime('%Y-%m-%d %H:%M:%S')
+                        adjust = 0
+                        new_adjust_idle = adjust_session_idle(idle_date_elem,None,total_idle_dur, idx, min_idle,adjust,increment_date_idle)
+                        increment_date_idle = new_adjust_idle
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {idle_date_elem.text}")
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
                 else:
-                    min = min+1
+                    min_idle = min_idle+1
                     idle_date_elem.text = total_idle_dur.strftime('%Y-%m-%d %H:%M:%S')
                  
             if total_session_dur:
                 session_date_elem = elem.find('total_sess_dur')
                 if session_date_elem is not None and session_date_elem.text is not None:
                     try:
-                        date_obj = datetime.strptime(session_date_elem.text, '%Y-%m-%d %H:%M:%S')
-                        new_date_obj = total_session_dur - date_obj
-                        if idx == min:
-                            value = new_date_obj.total_seconds() / 60
-                            min = -1
-                        new_date1 = date_obj + timedelta(minutes=value)
-                        session_date_elem.text = new_date1.strftime('%Y-%m-%d %H:%M:%S')
+                        adjust = 1
+                        new_adjust_sess = adjust_session_idle(None,session_date_elem,total_session_dur, idx, min_sess,adjust,increment_date_sess)
+                        increment_date_sess = new_adjust_sess
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {session_date_elem.text}")
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
                 else:
-                    min = min+1
+                    min_sess = min_sess+1
                     session_date_elem.text = total_session_dur.strftime('%Y-%m-%d %H:%M:%S')
            
             with cols[col_idx % 4].expander(f"#### Object {idx}", expanded=True):
@@ -365,8 +362,35 @@ def parse_denial(tree,root,min,max,new_source=None, new_date = None):
                 """)
             col_idx += 1
     
-    return tree
- 
+    return tree\
+
+#function to adjust session and idle date
+def adjust_session_idle(idle_date_elem,session_date_elem,total_dur, idx, min,adjust,value1):
+    
+    # Parse the date from the element's text
+    if (adjust == 0):
+        date_obj = datetime.strptime(idle_date_elem.text, '%Y-%m-%d %H:%M:%S')
+    elif (adjust == 1):
+        date_obj = datetime.strptime(session_date_elem.text, '%Y-%m-%d %H:%M:%S')
+    
+    # Calculate the difference in days between new_date and the parsed date
+    new_date_obj = total_dur - date_obj
+    
+    # Determine the value for adjustment based on index
+    if idx == min:
+        value1 = new_date_obj.total_seconds() / 60
+        min = -1  # Set min_value to -1 to prevent further changes
+    # Adjust the date
+    new_date1 = date_obj + timedelta(minutes=value1)
+    
+    # Update the text of date_elem with the new date in the correct format
+    if (adjust == 0):
+        idle_date_elem.text = new_date1.strftime('%Y-%m-%d %H:%M:%S')
+    elif (adjust == 1):
+        session_date_elem.text = new_date1.strftime('%Y-%m-%d %H:%M:%S')
+    #Return the value to retain the increment date
+    return value
+
 #Function to adjust date_element
 def adjust_date_element(usage_date_elem,concurrent_date_elem,denial_date_elem, new_date, idx, min,flag,value1):
     
