@@ -506,7 +506,7 @@ def main():
     # Sidebar for file selection and source update
     st.sidebar.title("ServiceNow ENGINEERING DEMO DATA MODIFIER")
     st.sidebar.divider()
-    with st.sidebar.expander(f"#### UPLOADED FILES"):
+    with st.sidebar.expander(f"#### UPLOAD FILES"):
         uploaded_files = st.file_uploader("Choose XML files", accept_multiple_files=True, type=["xml"])
    
     if uploaded_files:
