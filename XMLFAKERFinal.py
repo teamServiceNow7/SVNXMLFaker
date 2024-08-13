@@ -568,7 +568,7 @@ def main():
                 new_date = st.date_input("Enter Start Date",value=None)
 
             if usage:
-                with st.sidebar.expander(f"#### {"Update Idle Duration"}"):
+                with st.sidebar.expander(f"#### {"Edit Idle Duration"}"):
                     st.markdown("")
                     idle_dur_date = st.date_input("Enter Idle Duration (Date)",value=None)
                     idle_dur_time = st.time_input("Enter Idle Duration (Time)",value=None,step=60)
