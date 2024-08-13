@@ -614,7 +614,7 @@ def main():
                 type="primary"
                 )
                 if error: st.error(":x: Not Updated!")
-                else: st.sucess(":white_check_mark: All fields updated successfully!")
+                else: st.success(":white_check_mark: All fields updated successfully!")
 
 if __name__ == "__main__":
     DDMIcon= Image.open("DDM_Icon.ico")
