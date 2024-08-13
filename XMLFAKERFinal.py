@@ -554,7 +554,7 @@ def main():
                 st.markdown("")
                 new_source = st.text_input("New Source Value", "")
            
-            st.sidebar.subheader("New Date Value", "")
+            #st.sidebar.subheader("New Date Value", "")
 
             # Determine the appropriate label [EDITED  ]
             if denial:
