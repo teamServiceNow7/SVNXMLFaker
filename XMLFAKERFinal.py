@@ -225,7 +225,7 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                         value = adjust_date_element(usage_date_elem,None,None,new_date, idx, min,flag,value1)
                         value1 = value
                     except ValueError as e:
-                            st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY/MM/DD")
+                            st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {usage_date_elem.text}")
                 else:
@@ -246,7 +246,7 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {idle_date_elem.text}")
                     except ValueError as e:
-                            st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY/MM/DD")
+                            st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
                 else:
                     min = min+1
                     idle_date_elem.text = total_idle_dur.strftime('%Y-%m-%d %H:%M:%S')
@@ -265,7 +265,7 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {session_date_elem.text}")
                     except ValueError as e:
-                            st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY/MM/DD")
+                            st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
                 else:
                     min = min+1
                     session_date_elem.text = total_session_dur.strftime('%Y-%m-%d %H:%M:%S')
@@ -308,7 +308,7 @@ def parse_concurrent_usage(tree, root,min,max, new_source=None, new_date=None):
                         value = adjust_date_element(None,concurrent_date_elem,None,new_date, idx, min,flag,value1)
                         value1 = value
                     except ValueError as e:
-                        st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY/MM/DD")
+                        st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
                 else:
                     min = min+1
                     concurrent_date_elem.text = new_date.strftime('%Y-%m-%d')
@@ -348,7 +348,7 @@ def parse_denial(tree,root,min,max,new_source=None, new_date = None):
                         value = adjust_date_element(None,None,denial_date_elem,new_date, idx, min,flag,value1)
                         value1 = value
                     except ValueError as e:
-                        st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY/MM/DD")
+                        st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
                 else:
                     min = min+1
                     denial_date_elem.text = new_date.strftime('%Y-%m-%d')
