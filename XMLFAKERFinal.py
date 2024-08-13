@@ -209,7 +209,8 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
     st.write("  ")
     cols = st.columns(4)  # Adjust the number of columns as needed
     col_idx = 0
-    value = 0  # Initialize value here
+    flag = 0
+    value1 = 0  # Initialize value here
 
     for idx, elem in enumerate(root.findall('.//samp_eng_app_usage_summary'), 1):
         if min <= idx <= max:
@@ -221,15 +222,12 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                 usage_date_elem = elem.find('usage_date')
                 if usage_date_elem is not None and usage_date_elem.text is not None:
                     try:
-                        date_obj = datetime.strptime(usage_date_elem.text, '%Y-%m-%d')
-                        new_date_obj = new_date - date_obj.date()
-                        if idx == min:
-                            value = new_date_obj.days
-                            min = -1
-                        new_date1 = date_obj + timedelta(days=value)
-                        usage_date_elem.text = new_date1.strftime('%Y-%m-%d')
+                        value = adjust_date_element(usage_date_elem,None,None,new_date, idx, min,flag,value1)
+                        value1 = value
+                    except ValueError as e:
+                            st.error(f"Error parsing date at index {idx}: {str(e)}")
                     except OverflowError:
-                        st.error(f"Date calculation overflow at index {idx}. Original idle duration: {idle_date_elem.text}")
+                        st.error(f"Date calculation overflow at index {idx}. Original idle duration: {usage_date_elem.text}")
                 else:
                     min = min+1
                     usage_date_elem.text = new_date.strftime('%Y-%m-%d')
@@ -247,6 +245,8 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                         idle_date_elem.text = new_date1.strftime('%Y-%m-%d %H:%M:%S')
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {idle_date_elem.text}")
+                    except ValueError as e:
+                            st.error(f"Error parsing date at index {idx}: {str(e)}")
                 else:
                     min = min+1
                     idle_date_elem.text = total_idle_dur.strftime('%Y-%m-%d %H:%M:%S')
@@ -264,6 +264,8 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                         session_date_elem.text = new_date1.strftime('%Y-%m-%d %H:%M:%S')
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {session_date_elem.text}")
+                    except ValueError as e:
+                            st.error(f"Error parsing date at index {idx}: {str(e)}")
                 else:
                     min = min+1
                     session_date_elem.text = total_session_dur.strftime('%Y-%m-%d %H:%M:%S')
@@ -288,7 +290,8 @@ def parse_concurrent_usage(tree, root,min,max, new_source=None, new_date=None):
     st.write("  ")
     cols = st.columns(4)  # Adjust the number of columns as needed
     col_idx = 0
-    value = 0
+    flag = 1
+    value1 = 0
  
     for idx, elem in enumerate(root.findall('.//samp_eng_app_concurrent_usage'), 1):
  
@@ -302,14 +305,8 @@ def parse_concurrent_usage(tree, root,min,max, new_source=None, new_date=None):
                 concurrent_date_elem = elem.find('usage_date')
                 if concurrent_date_elem is not None and concurrent_date_elem.text is not None:
                     try:
-                        date_obj = datetime.strptime(concurrent_date_elem.text, '%Y-%m-%d')
-                        new_date_obj = new_date - date_obj.date()
-                        if idx == min:
-                            value = new_date_obj.days
-                            min = -1
-                        new_date1 = date_obj + timedelta(days = value)
-                        concurrent_date_elem.text = new_date1  
-                        concurrent_date_elem.text = concurrent_date_elem.text.strftime('%Y-%m-%d')
+                        value = adjust_date_element(None,concurrent_date_elem,None,new_date, idx, min,flag,value1)
+                        value1 = value
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: {str(e)}")
                 else:
@@ -334,7 +331,8 @@ def parse_denial(tree,root,min,max,new_source=None, new_date = None):
     st.write("  ")
     cols = st.columns(4)  # Adjust the number of columns as needed
     col_idx = 0
-    value = 0
+    flag = 2
+    value1 = 0
     for idx, elem in enumerate(root.findall('.//samp_eng_app_denial'), 1):
  
         if ((idx <= max) and (idx >= min)):  #Condition for the slider
@@ -347,13 +345,8 @@ def parse_denial(tree,root,min,max,new_source=None, new_date = None):
                 denial_date_elem = elem.find('denial_date')
                 if denial_date_elem is not None and denial_date_elem.text is not None:
                     try:
-                        date_obj = datetime.strptime(denial_date_elem.text, '%Y-%m-%d')
-                        new_date_obj = new_date - date_obj.date()        
-                        if idx == min:
-                            value = new_date_obj.days
-                            min = -1
-                        new_date1 = date_obj + timedelta(days=value)
-                        denial_date_elem.text = new_date1.strftime('%Y-%m-%d')
+                        value = adjust_date_element(None,None,denial_date_elem,new_date, idx, min,flag,value1)
+                        value1 = value
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: {str(e)}")
                 else:
@@ -374,7 +367,38 @@ def parse_denial(tree,root,min,max,new_source=None, new_date = None):
             col_idx += 1
     
     return tree
-
+ 
+#Function to adjust date_element
+def adjust_date_element(usage_date_elem,concurrent_date_elem,denial_date_elem, new_date, idx, min,flag,value1):
+    
+    # Parse the date from the element's text
+    if (flag == 0):
+        date_obj = datetime.strptime(usage_date_elem.text, '%Y-%m-%d')
+    elif (flag == 1):
+        date_obj = datetime.strptime(concurrent_date_elem.text, '%Y-%m-%d')
+    elif (flag == 2):
+        date_obj = datetime.strptime(denial_date_elem.text, '%Y-%m-%d')
+    
+    # Calculate the difference in days between new_date and the parsed date
+    new_date_obj = new_date - date_obj.date()
+    
+    # Determine the value for adjustment based on index
+    if idx == min:
+        value1 = new_date_obj.days
+        min = -1  # Set min_value to -1 to prevent further changes
+    # Adjust the date
+    new_date1 = date_obj + timedelta(days=value1)
+    
+    # Update the text of date_elem with the new date in the correct format
+    if (flag == 0):
+        usage_date_elem.text = new_date1.strftime('%Y-%m-%d')
+    elif (flag == 1):
+        concurrent_date_elem.text = new_date1.strftime('%Y-%m-%d')
+    elif (flag == 2):
+        denial_date_elem.text = new_date1.strftime('%Y-%m-%d')
+    #Return the value to retain the increment date
+    return value1
+ 
 #Function for writing the XML file
 def save_modified_xml(file_name, tree):
     modified_xml = BytesIO()
