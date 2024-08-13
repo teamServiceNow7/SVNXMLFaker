@@ -362,7 +362,7 @@ def parse_denial(tree,root,min,max,new_source=None, new_date = None):
                 """)
             col_idx += 1
     
-    return tree\
+    return tree
 
 #function to adjust session and idle date
 def adjust_session_idle(idle_date_elem,session_date_elem,total_dur, idx, min,adjust,value1):
