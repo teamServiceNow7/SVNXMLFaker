@@ -208,6 +208,7 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
     st.write("  ")
     cols = st.columns(4)  # Adjust the number of columns as needed
     # Initializion of values
+    error = False
     col_idx = 0
     usage_value = 0  
     increment_date_idle = 0
@@ -238,8 +239,10 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                     #catching the errors (this will print if there are wrong format in date and if it have date calculation overflow)
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
+                        error = True
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {usage_date_elem.text}")
+                        error = True
                 else:
                     #adjusting the min_usage to get the next value if the first value is none
                     min_usage = min_usage+1
@@ -261,8 +264,10 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                     #catching the errors (this will print if there are wrong format in date and if it have date calculation overflow)
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {idle_date_elem.text}")
+                        error = True
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
+                        error = True
                 else:
                     #adjusting the min_idle to get the next value if the first value is none
                     min_idle = min_idle+1
@@ -284,8 +289,10 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                     #catching the errors (this will print if there are wrong format in date and if it have date calculation overflow)
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {session_date_elem.text}")
+                        error = True
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
+                        error = True
                 else:
                     #adjusting the min_idle to get the next value if the first value is none
                     min_sess = min_sess+1
@@ -304,7 +311,7 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                 """)
             col_idx += 1
 
-    return tree
+    return error, tree
 
 #Function for concurrent usage 
 def parse_concurrent_usage(tree, root,min,max, new_source=None, new_date=None):
@@ -314,6 +321,7 @@ def parse_concurrent_usage(tree, root,min,max, new_source=None, new_date=None):
     col_idx = 0
     flag = 1
     value1 = 0
+    error = False
  
     for idx, elem in enumerate(root.findall('.//samp_eng_app_concurrent_usage'), 1):
         #condition for the slider
@@ -337,6 +345,7 @@ def parse_concurrent_usage(tree, root,min,max, new_source=None, new_date=None):
                     #catching the errors (this will print if there are wrong format in date)
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
+                        error = True
                 else:
                     #adjusting the min_idle to get the next value if the first value is none
                     min = min+1
@@ -353,7 +362,7 @@ def parse_concurrent_usage(tree, root,min,max, new_source=None, new_date=None):
                 """)
             col_idx += 1
    
-    return tree
+    return error, tree
  
 #Function for Denial 
 def parse_denial(tree,root,min,max,new_source=None, new_date = None):
@@ -363,6 +372,7 @@ def parse_denial(tree,root,min,max,new_source=None, new_date = None):
     col_idx = 0
     flag = 2
     value1 = 0
+    error = False 
     for idx, elem in enumerate(root.findall('.//samp_eng_app_denial'), 1):
         #Condition for the slider
         if ((idx <= max) and (idx >= min)):  
@@ -385,6 +395,7 @@ def parse_denial(tree,root,min,max,new_source=None, new_date = None):
                     #catching the errors (this will print if there are wrong format in date)
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
+                        error = True
                 else:
                     #adjusting the min_idle to get the next value if the first value is none
                     min = min+1
@@ -404,7 +415,7 @@ def parse_denial(tree,root,min,max,new_source=None, new_date = None):
                 """)
             col_idx += 1
     
-    return tree
+    return error, tree
 
 #function to adjust session and idle date
 def adjust_session_idle(idle_date_elem,session_date_elem,total_dur, idx, min,adjust,value1):
@@ -581,13 +592,13 @@ def main():
 
  
             if usage:
-                tree = parse_usage_summary(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None,total_idle_dur if update_button else None, total_session_dur if update_button else None)
+                error, tree = parse_usage_summary(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None,total_idle_dur if update_button else None, total_session_dur if update_button else None)
 
             elif concurrent:
-                tree = parse_concurrent_usage(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None)
+                error, tree = parse_concurrent_usage(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None)
            
             elif denial:
-                tree = parse_denial(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None)
+                error, tree = parse_denial(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None)
                 
             else:
                 st.write(f"Unknown file type: {file_name}")
@@ -602,9 +613,8 @@ def main():
                 mime='application/xml',
                 type="primary"
                 )
-                if not (OverflowError or ValueError): placeholder.error(":x: Not Updated!")
-                else: placeholder.success(":white_check_mark: All fields updated successfully!")
-                st.sidebar.divider()
+                if error: st.error(":x: Not Updated!")
+                else: st.sucess(":white_check_mark: All fields updated successfully!")
 
 if __name__ == "__main__":
     DDMIcon= Image.open("DDM_Icon.ico")
