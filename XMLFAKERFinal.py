@@ -183,7 +183,6 @@ sidebar_bg_img = """
     
     /*for paragraph*/
     p, ol, ul, dl {
-    
         font-size: 1rem;
         font-weight: 400;
     }
