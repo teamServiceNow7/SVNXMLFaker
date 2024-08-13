@@ -207,8 +207,9 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
 
     st.write("  ")
     cols = st.columns(4)  # Adjust the number of columns as needed
+    # Initializion of values
     col_idx = 0
-    usage_value = 0  # Initialize value here
+    usage_value = 0  
     increment_date_idle = 0
     increment_date_sess = 0
     flag = 0
@@ -217,53 +218,78 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
     min_idle = min
 
     for idx, elem in enumerate(root.findall('.//samp_eng_app_usage_summary'), 1):
+        #condition for the slider
         if min <= idx <= max:
+            #To change the source
             if new_source:
                 source_elem = elem.find('source')
                 if source_elem is not None:
                     source_elem.text = new_source
+            #To change the usage_date in usage
             if new_date:
                 usage_date_elem = elem.find('usage_date')
+                #condition if the usage_date_elem.text have a value
                 if usage_date_elem is not None and usage_date_elem.text is not None:
                     try:
+                        #calling the function to adjust the usage date
                         value = adjust_date_element(usage_date_elem,None,None,new_date, idx, min_usage,flag,usage_value)
+                        #storing the increment date value to use to other iterations
                         usage_value = value
+                    #catching the errors (this will print if there are wrong format in date and if it have date calculation overflow
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {usage_date_elem.text}")
                 else:
+                    #adjusting the min_usage to get the next value if the first value is none
                     min_usage = min_usage+1
+                    #replacing all that have the none value into the inputted start date
                     usage_date_elem.text = new_date.strftime('%Y-%m-%d')
-                 
+
+            #To change the total_idle_dur in usage
             if total_idle_dur:
                 idle_date_elem = elem.find('total_idle_dur')
+                #condition if the idle_date_elem.text have a value
                 if idle_date_elem is not None and idle_date_elem.text is not None:
                     try:
+                        #declaring of adjust variable to use in the function
                         adjust = 0
+                        #calling the function to adjust idle_date
                         new_adjust_idle = adjust_session_idle(idle_date_elem,None,total_idle_dur, idx, min_idle,adjust,increment_date_idle)
+                        #storing the increment date value to use to other iterations
                         increment_date_idle = new_adjust_idle
+                    #catching the errors (this will print if there are wrong format in date and if it have date calculation overflow
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {idle_date_elem.text}")
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
                 else:
+                    #adjusting the min_idle to get the next value if the first value is none
                     min_idle = min_idle+1
+                    #replacing all that have the none value into the inputted start date
                     idle_date_elem.text = total_idle_dur.strftime('%Y-%m-%d %H:%M:%S')
-                 
+
+            #To change the total_session_dur in usage
             if total_session_dur:
                 session_date_elem = elem.find('total_sess_dur')
+                #condition if the session_date_elem.text have a value
                 if session_date_elem is not None and session_date_elem.text is not None:
                     try:
+                        #declaring of adjust variable to use in the function
                         adjust = 1
+                        #calling the function to adjust session_date
                         new_adjust_sess = adjust_session_idle(None,session_date_elem,total_session_dur, idx, min_sess,adjust,increment_date_sess)
+                        #storing the increment date value to use to other iterations
                         increment_date_sess = new_adjust_sess
+                    #catching the errors (this will print if there are wrong format in date and if it have date calculation overflow
                     except OverflowError:
                         st.error(f"Date calculation overflow at index {idx}. Original idle duration: {session_date_elem.text}")
                     except ValueError as e:
                         st.error(f"Error parsing date at index {idx}: time data '01-01-2024' does not match format YYYY-MM-DD")
                 else:
+                    #adjusting the min_idle to get the next value if the first value is none
                     min_sess = min_sess+1
+                    #replacing all that have the none value into the inputted start date
                     session_date_elem.text = total_session_dur.strftime('%Y-%m-%d %H:%M:%S')
            
             with cols[col_idx % 4].expander(f"#### Object {idx}", expanded=True):
