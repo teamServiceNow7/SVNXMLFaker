@@ -558,9 +558,9 @@ def main():
 
             # Determine the appropriate label [EDITED  ]
             if denial:
-                label = "Update Denial Date"
+                label = "Edit Denial Date"
             else:
-                label = "Update Usage Date"
+                label = "Edit Usage Date"
 
             # Display the date input with the corresponding label
             with st.sidebar.expander(f"#### {label}"):
