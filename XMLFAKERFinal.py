@@ -602,7 +602,7 @@ def main():
                 mime='application/xml',
                 type="primary"
                 )
-                if(OverflowError or ValueError): placeholder.error(":x: Not Updated!")
+                if not (OverflowError or ValueError): placeholder.error(":x: Not Updated!")
                 else: placeholder.success(":white_check_mark: All fields updated successfully!")
                 st.sidebar.divider()
 
