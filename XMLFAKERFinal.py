@@ -311,7 +311,9 @@ def parse_usage_summary(tree,root,min, max,new_source=None, new_date=None, total
                 """)
             col_idx += 1
 
-    return error, tree
+    st.session_state.active_xml = tree
+
+    return error, st.session_state.active_xml
 
 #Function for concurrent usage 
 def parse_concurrent_usage(tree, root,min,max, new_source=None, new_date=None):
@@ -362,7 +364,9 @@ def parse_concurrent_usage(tree, root,min,max, new_source=None, new_date=None):
                 """)
             col_idx += 1
    
-    return error, tree
+    st.session_state.active_xml = tree
+
+    return error, st.session_state.active_xml
  
 #Function for Denial 
 def parse_denial(tree,root,min,max,new_source=None, new_date = None):
@@ -415,7 +419,9 @@ def parse_denial(tree,root,min,max,new_source=None, new_date = None):
                 """)
             col_idx += 1
     
-    return error, tree
+    st.session_state.active_xml = tree
+
+    return error, st.session_state.active_xml
 
 #function to adjust session and idle date
 def adjust_session_idle(idle_date_elem,session_date_elem,total_dur, idx, min,adjust,value1):
@@ -503,6 +509,9 @@ def main():
     time.sleep(1)
     my_bar.empty()
 
+    if 'active_xml' not in st.session_state:
+        st.session_state.active_xml = None
+
     # Sidebar for file selection and source update
     st.sidebar.title("ServiceNow ENGINEERING DEMO DATA MODIFIER")
     st.sidebar.divider()
@@ -529,8 +538,11 @@ def main():
             st.header(f"Update {display_file_name}")
            
             # Load and parse the XML file
-            tree = ET.parse(selected_file)
-            root = tree.getroot()
+            if st.session_state.active_xml is None:
+                st.session_state.active_xml = ET.parse(selected_file)
+            else:
+                st.session_state.active_xml = st.session_state.active_xml
+            root = st.session_state.active_xml.getroot()
             usage_elements = None
             usage = root.find('.//samp_eng_app_usage_summary[@action="INSERT_OR_UPDATE"]')
             concurrent = root.find('.//samp_eng_app_concurrent_usage[@action="INSERT_OR_UPDATE"]')
@@ -593,20 +605,20 @@ def main():
 
  
             if usage:
-                error, tree = parse_usage_summary(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None,total_idle_dur if update_button else None, total_session_dur if update_button else None)
+                error, st.session_state.active_xml = parse_usage_summary(st.session_state.active_xml,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None,total_idle_dur if update_button else None, total_session_dur if update_button else None)
 
             elif concurrent:
-                error, tree = parse_concurrent_usage(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None)
+                error, st.session_state.active_xml = parse_concurrent_usage(st.session_state.active_xml,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None)
            
             elif denial:
-                error, tree = parse_denial(tree,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None)
+                error, st.session_state.active_xml = parse_denial(st.session_state.active_xml,root,min_range,max_range, new_source if update_button else None, new_date if update_button else None)
                 
             else:
                 st.write(f"Unknown file type: {file_name}")
                 return
             
             if update_button:
-                modified_xml = save_modified_xml(file_name, tree)
+                modified_xml = save_modified_xml(file_name, st.session_state.active_xml)
                 st.sidebar.download_button(
                 label="Download Modified XML",
                 data = modified_xml,    
@@ -622,7 +634,8 @@ if __name__ == "__main__":
     st.set_page_config(
         page_title="ServiceNow Engineering Demo Data Modifier",
         layout="wide",
-        page_icon=DDMIcon)
+        page_icon=DDMIcon
+        )
     
     st.markdown(sidebar_bg_img, unsafe_allow_html=True)
     st.logo("logoSN.png")
